@@ -2,9 +2,9 @@ function s = horner_eval(a,x,y)
 
 n = length(a);
 if n == 1
-	result = a(n);
+  result = a(1);
 else
-	result = a(n)*(y - x(n-1)) + horner_eval(a(1:n-1),x(1:n-1),y);
+  result = a(1) + (y - x(1)) * horner_eval(a(2:n),x(2:n),y);
 end
 
 s = result;
