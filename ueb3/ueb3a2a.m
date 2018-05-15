@@ -29,20 +29,16 @@ y = (b + a)/2 + ((b - a)/2) * cos(pi*(2*i + 1)/(2*(n+1)));
 
 % ... fuer aequidistante Stuetzstellen
 m1 = divided_differences(f, x);
+
 % Hole Koeffizienten aus Dreiecksmatrix
-a1 = [];
-for j = 1:length(x)
-	a1(j) = m1(j,j);
-end
+a1 = diag(m1);
+
 
 % ... fuer Tschebyschow Stuetzstellen
 m2 = divided_differences(f, y);
-% Hole Koeffizienten aus Dreiecksmatrix
-a2 = [];
-for j = 1:length(x)
-	a2(j) = m2(j,j);
-end
 
+% Hole Koeffizienten aus Dreiecksmatrix
+a2 = diag(m2);
 
 
 % Berechne Funktionswerte fuer f und p 
@@ -60,7 +56,6 @@ for j = 1:length(y)
 end
 
 
-
 % Berechne Interpolationsfehler
 
 fehler_aequi = max(abs(zf1-zp1))
@@ -68,4 +63,14 @@ fehler_tscheby = max(abs(zf2-zp2))
 
 result = 0; %[fehler_aequi, fehler_tscheby];
 
+fig = figure;
+hold on;
+plot(zf1, x);
+plot(zf2, x);
+plot(zp1, y);
+plot(zp1, y);
+figname =  strcat('n', n, '.png');
+
+saveas(fig, figname)
+hold
 end
