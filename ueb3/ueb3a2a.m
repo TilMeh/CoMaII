@@ -3,10 +3,10 @@ function result = ueb3a2a(n)
 % Initialisiere Variablen
 
 % Anzahl Stuetzstellen
-i = 0:1000;
+i = 0:n;
 
 % Funktionen
-f = @sin;
+f = @(x) sin(x);
 p = @horner_eval;
 
 % Intervallgrenzen
@@ -18,7 +18,7 @@ b = 5;
 % Erstelle Stuetzstellen
 
 % Erstelle aequidistante Stuetzstellen
-x = a + i*(b - a)/n;
+xis = a + i*(b - a)/n;
 
 % Erstelle Tschebyschow Stuetzstellen
 y = (b + a)/2 + ((b - a)/2) * cos(pi*(2*i + 1)/(2*(n+1)));
@@ -28,7 +28,7 @@ y = (b + a)/2 + ((b - a)/2) * cos(pi*(2*i + 1)/(2*(n+1)));
 % Berechne Newton-Koeffizienten
 
 % ... fuer aequidistante Stuetzstellen
-m1 = divided_differences(f, x);
+m1 = divided_differences(f, xis);
 
 % Hole Koeffizienten aus Dreiecksmatrix
 a1 = diag(m1);
@@ -44,15 +44,17 @@ a2 = diag(m2);
 % Berechne Funktionswerte fuer f und p 
 
 % ... mit aequidistanten Stuetzstellen
-zf1 = f(x);
-for j = 1:length(x)
-	zp1(j) = p(a1,x,x(j));
+zf1 = f(xis);
+xis
+zf1
+for j = 1:length(xis)
+	zp1(j) = p(a1,xis,xis(j));
 end
 
 % ... mit Tschebyschow Stuetzstellen
 zf2 = f(y);
 for j = 1:length(y)
-	zp2(j) = p(a1,y,y(j));
+	zp2(j) = p(a2,y,y(j));
 end
 
 
@@ -65,12 +67,13 @@ result = 0; %[fehler_aequi, fehler_tscheby];
 
 fig = figure;
 hold on;
-plot(zf1, x);
-plot(zf2, x);
-plot(zp1, y);
-plot(zp1, y);
-figname =  strcat('n', n, '.png');
-
-saveas(fig, figname)
-hold
+%axis([-5 5])
+plot(xis, zf1);
+plot(xis, zf2);
+plot(y, zp1);
+plot(y, zp2);
+legend('f(x) Aeq. Stuetz.', 'Interpol', 'f(x) Tscheb', 'Interpol');
+figname =  strcat('2a_n', num2str(n), '.png');
+saveas(fig, figname);
+hold off;
 end
