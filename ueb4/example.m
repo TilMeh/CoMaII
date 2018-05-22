@@ -16,13 +16,11 @@ end
 errors2 = abs((0.5 * erf(1) * sqrt(pi)) - sums);
 
 figure1 = figure;
-%subplot(2,1,1);
 semilogx(errors1); hold on;
 title('Riemann Error');
-%subplot(2,1,2);
 semilogx(errors2);
-%title();
 legend('q = 0', 'q = 0.5');
 saveas(figure1, 'riemann_error.png');
+holf off;
 
 % Beobachtung: Der Fehler ist für q = 0.5 geringer
